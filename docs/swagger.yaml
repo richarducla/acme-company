@@ -1,0 +1,148 @@
+basePath: /api/acme
+definitions:
+  errors.HandlerError:
+    properties:
+      description:
+        type: string
+      message:
+        type: string
+      statusCode:
+        type: integer
+    type: object
+  service.SignInInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  service.UserInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  users.Message:
+    properties:
+      message:
+        type: string
+    type: object
+  users.RegisterResponse:
+    properties:
+      email:
+        type: string
+      status:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: this is the api for the auth users in ACME company
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: API Acme
+  version: 1.0.0
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint singin an user
+      parameters:
+      - description: Login user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/service.SignInInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.HandlerError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/errors.HandlerError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.HandlerError'
+      summary: Login User
+      tags:
+      - users
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint logout a user
+      parameters:
+      - description: Logout user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/service.SignInInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.Message'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/users.Message'
+      summary: Logout user
+      tags:
+      - users
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint save an user
+      parameters:
+      - description: Add user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/service.UserInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/users.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.HandlerError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.HandlerError'
+      summary: Register an user
+      tags:
+      - users
+swagger: "2.0"
