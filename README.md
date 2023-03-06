@@ -1,4 +1,4 @@
-# Sales project
+# ACME PROJECT
 
 This project is an implementation of an authentication api
 
