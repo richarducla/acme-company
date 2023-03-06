@@ -12,7 +12,7 @@ type SignInInput struct {
 	Password string `json:"password" validate:"required"`
 }
 
-func (s Service) SignIn(input SignInInput) (*string, *errors.HandlerError) {
+func (s service) SignIn(input SignInInput) (*string, *errors.HandlerError) {
 	user, err := s.userRepository.Get(input.Username)
 	if err != nil {
 		log.Error("error getting user %w", err)

@@ -15,12 +15,12 @@ type UserInput struct {
 	Email    string `json:"email"    validate:"required,email"`
 }
 
-func (s Service) Create(input UserInput) (models.User, *errors.HandlerError) {
+func (s service) Create(input UserInput) (models.User, *errors.HandlerError) {
 
 	password, err := utils.HashPassword(input.Password)
 	if err != nil {
 		log.Error("error encrypted password %w ", err)
-		return models.User{}, errors.UnprocessableEntityErr
+		return models.User{}, errors.UnprocessableEntityErr.WithDescription(err.Error())
 	}
 
 	user := models.User{
@@ -31,7 +31,7 @@ func (s Service) Create(input UserInput) (models.User, *errors.HandlerError) {
 
 	user, err = s.userRepository.Create(user)
 	if err != nil {
-		return models.User{}, errors.UnprocessableEntityErr
+		return models.User{}, errors.UnprocessableEntityErr.WithDescription(err.Error())
 	}
 
 	return user, nil

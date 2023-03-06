@@ -113,6 +113,7 @@ func (h handler) SingOut(ec echo.Context) error {
 		return ec.JSON(http.StatusBadRequest, err)
 	}
 
+	log.Print(ec.Cookies())
 	cookie, err := ec.Cookie(fmt.Sprintf("logged_in_%s", credentials.Username))
 	if err != nil {
 		return ec.JSON(http.StatusUnprocessableEntity, Message{
